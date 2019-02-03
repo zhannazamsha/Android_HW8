@@ -25,6 +25,7 @@ public class NetworkingManagerUnsplash implements NetworkingManager {
 
     private ArrayList<PhotoItem> photoItems = new ArrayList<>();
     private int page = 1;
+    private int per_page = 25;
     private boolean requestInProgress = false;
 
 
@@ -32,7 +33,7 @@ public class NetworkingManagerUnsplash implements NetworkingManager {
     public void getPhotoItems(NetworkingResultListener result) {
 
         Request request = new Request.Builder()
-                .url("https://api.unsplash.com/photos/?page=" + page + "&per_page=25&client_id=311ed690d7678d20b8ce556e56d5bf168d6ddf9fa1126e58193d95089d796542")
+                .url("https://api.unsplash.com/photos/?page=" + page + "&per_page=" + per_page + "&client_id=311ed690d7678d20b8ce556e56d5bf168d6ddf9fa1126e58193d95089d796542")
                 .build();
 
         requestInProgress = true;
