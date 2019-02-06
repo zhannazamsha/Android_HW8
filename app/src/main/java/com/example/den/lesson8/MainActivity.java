@@ -15,7 +15,8 @@ import com.example.den.lesson8.Interfaces.NetworkingManager;
 import com.example.den.lesson8.Interfaces.PhotoItem;
 import com.example.den.lesson8.Interfaces.PhotoItemsPresenter;
 import com.example.den.lesson8.Interfaces.PhotoItemsPresenterCallbacks;
-import com.example.den.lesson8.Presenters.PhotoItemPresenterGridView;
+import com.example.den.lesson8.RecyclerView.PhotoPresenterRecyclerView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class MainActivity extends Activity implements PhotoItemsPresenterCallbacks {
@@ -42,22 +43,36 @@ public class MainActivity extends Activity implements PhotoItemsPresenterCallbac
         }
         Push.push(this);
         showImgService(ImgServices.GIPHY);
+
+
+      //      throw new RuntimeException("This is a crash");
+
+
     }
 
     private void showImgService(ImgServices service) {
-
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "selected");
         switch (service) {
             case GIPHY:
+                FirebaseAnalytics.getInstance(this).
+                        logEvent(ImgServices.GIPHY.name(), bundle);
                 networkingManager = new NetworkingManagerGiphy();
                 break;
             case UNSPLASH:
+                FirebaseAnalytics.getInstance(this).
+                        logEvent(ImgServices.UNSPLASH.name(), bundle);
                 networkingManager = new NetworkingManagerUnsplash();
                 break;
             case FAVORITE:
+                FirebaseAnalytics.getInstance(this).
+                        logEvent(ImgServices.FAVORITE.name(), bundle);
                 networkingManager = new NetworkingManagerLocal();
         }
 
-        this.presenter = new PhotoItemPresenterGridView();
+       // this.presenter = new PhotoItemPresenterGridView();
+        this.presenter = new PhotoPresenterRecyclerView();
+
         this.networkingManager.getPhotoItems(photoItems ->
                 runOnUiThread(()-> {
                     presenter.setupWithPhotoItems(photoItems,this, this);
